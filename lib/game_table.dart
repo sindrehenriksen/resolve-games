@@ -15,7 +15,7 @@ class GameTableWidgetState extends State<GameTableWidget> {
   @override
   void initState() {
     super.initState();
-    _teamsData = Map<String, dynamic>();
+    _teamsData = <String, dynamic>{};
     teamsRef.once().then((DatabaseEvent databaseEvent) {
       setState(() {
         _teamsData = databaseEvent.snapshot.value as Map<String, dynamic>;
@@ -32,7 +32,18 @@ class GameTableWidgetState extends State<GameTableWidget> {
           _teamsData = (snapshot.data!).snapshot.value as Map<String, dynamic>;
         }
 
-        final rows = _teamsData.entries.map((entry) {
+        final teamsDataA = <String, dynamic>{};
+        final teamsDataB = <String, dynamic>{};
+
+        _teamsData.forEach((teamId, teamData) {
+          if (teamId.contains('A')) {
+            teamsDataA[teamId] = teamData;
+          } else if (teamId.contains('B')) {
+            teamsDataB[teamId] = teamData;
+          }
+        });
+
+        final rowsA = teamsDataA.entries.map((entry) {
           final teamData = entry.value;
           final cells = <DataCell>[
             DataCell(Text(teamData['teamName'])),
@@ -47,18 +58,50 @@ class GameTableWidgetState extends State<GameTableWidget> {
           return DataRow(cells: cells);
         }).toList();
 
-        return DataTable(
-          columns: const [
-            DataColumn(label: Text('Team')),
-            //DataColumn(label: Text('R'), tooltip: 'Elo Rating'),
-            DataColumn(label: Text('GP'), tooltip: 'Games Played'),
-            DataColumn(label: Text('W'), tooltip: 'Wins'),
-            DataColumn(label: Text('L'), tooltip: 'Losses'),
-            DataColumn(label: Text('PD'), tooltip: 'Points Difference'),
-            DataColumn(label: Text('PF'), tooltip: 'Points For'),
-            DataColumn(label: Text('PA'), tooltip: 'Points Against'),
+        final rowsB = teamsDataB.entries.map((entry) {
+          final teamData = entry.value;
+          final cells = <DataCell>[
+            DataCell(Text(teamData['teamName'])),
+            DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
+          ];
+
+          return DataRow(cells: cells);
+        }).toList();
+
+        return Column(
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Group A')),
+                //DataColumn(label: Text('R'), tooltip: 'Elo Rating'),
+                DataColumn(label: Text('GP'), tooltip: 'Games Played'),
+                DataColumn(label: Text('W'), tooltip: 'Wins'),
+                DataColumn(label: Text('L'), tooltip: 'Losses'),
+                DataColumn(label: Text('PD'), tooltip: 'Points Difference'),
+                DataColumn(label: Text('PF'), tooltip: 'Points For'),
+                DataColumn(label: Text('PA'), tooltip: 'Points Against'),
+              ],
+              rows: rowsA
+            ),
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Group B')),
+                //DataColumn(label: Text('R'), tooltip: 'Elo Rating'),
+                DataColumn(label: Text('GP'), tooltip: 'Games Played'),
+                DataColumn(label: Text('W'), tooltip: 'Wins'),
+                DataColumn(label: Text('L'), tooltip: 'Losses'),
+                DataColumn(label: Text('PD'), tooltip: 'Points Difference'),
+                DataColumn(label: Text('PF'), tooltip: 'Points For'),
+                DataColumn(label: Text('PA'), tooltip: 'Points Against'),
+              ],
+              rows: rowsB
+            ),
           ],
-          rows: rows
         );
       },
     );
