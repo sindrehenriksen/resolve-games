@@ -46,7 +46,10 @@ class GameTableWidgetState extends State<GameTableWidget> {
         final rowsA = teamsDataA.entries.map((entry) {
           final teamData = entry.value;
           final cells = <DataCell>[
-            DataCell(Text(teamData['teamName'])),
+            DataCell(Tooltip(
+              message: teamData['members'].join(', '),
+              child: Text(teamData['teamName']),
+            )),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
@@ -61,7 +64,10 @@ class GameTableWidgetState extends State<GameTableWidget> {
         final rowsB = teamsDataB.entries.map((entry) {
           final teamData = entry.value;
           final cells = <DataCell>[
-            DataCell(Text(teamData['teamName'])),
+            DataCell(Tooltip(
+              message: teamData['members'].join(', '),
+              child: Text(teamData['teamName']),
+            )),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
