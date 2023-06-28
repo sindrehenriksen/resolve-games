@@ -1,10 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:resolve_games/init_teams.dart';
 
+import 'firebase_options.dart';
 import 'game_table.dart';
 
-void main() {
+Future<void> main() async {
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Add initial team data
+  WidgetsFlutterBinding.ensureInitialized();
+  addInitialTeamData();
+
+  // Run the app
   runApp(const ResolveGamesApp());
 }
 

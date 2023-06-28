@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   flutter_markdown: any
+  firebase_core: ^2.14.0
+  firebase_database: ^10.2.3
+  csv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +65,7 @@ flutter:
 
   assets:
     - assets/rules.md
+    - assets/teams.csv
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
