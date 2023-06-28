@@ -59,8 +59,10 @@ class ResolveGamesHomePage extends StatefulWidget {
 class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
 
   final List<Tab> tabs = const [
+    Tab(text: 'Teams'),
     Tab(text: 'Table'),
     Tab(text: 'Matches'),
+    Tab(text: 'Rules'),
   ];
 
   @override
@@ -73,6 +75,7 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
     // than having to individually change instances of widgets.
     return DefaultTabController(
       length: tabs.length,
+      initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           // TRY THIS: Try changing the color here to a specific color (to
@@ -93,8 +96,10 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // wireframe for each widget.
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Align(alignment: Alignment.topCenter, child: Text('Teams content (TBD)')),
             Align(alignment: Alignment.topCenter, child: GameTableWidget()),
-            Align(alignment: Alignment.topCenter, child: Text('Matches content')),
+            Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
+            Align(alignment: Alignment.topCenter, child: Text('Rules and regulations content (TBD)')),
           ],
         ),
       ),
