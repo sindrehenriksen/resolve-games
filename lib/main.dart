@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'game_table.dart';
 
@@ -65,6 +67,21 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
     Tab(text: 'Rules'),
   ];
 
+  String rulesMarkdownContent = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadRulesMarkdown();
+  }
+
+  Future<void> loadRulesMarkdown() async {
+    String content = await rootBundle.loadString('assets/rules.md');
+    setState(() {
+      rulesMarkdownContent = content;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -90,18 +107,17 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
             tabs: tabs,
           ),
         ),
-        body: const TabBarView(
+        body: Center(child: SizedBox(width: 700, child: TabBarView(
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Align(alignment: Alignment.topCenter, child: Text('Teams content (TBD)')),
-            Align(alignment: Alignment.topCenter, child: GameTableWidget()),
-            Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
-            Align(alignment: Alignment.topCenter, child: Text('Rules and regulations content (TBD)')),
+            const Align(alignment: Alignment.topCenter, child: Text('Teams content (TBD)')),
+            const Align(alignment: Alignment.topCenter, child: GameTableWidget()),
+            const Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
+            Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
           ],
-        ),
+        ))),
       ),
     );
   }
