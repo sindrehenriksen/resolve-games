@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:resolve_games/init_matches.dart';
 import 'package:resolve_games/init_teams.dart';
 import 'package:resolve_games/teams_table.dart';
 
@@ -14,9 +15,10 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Add initial team data
+  // Add initial team and match data to database
   WidgetsFlutterBinding.ensureInitialized();
   addInitialTeamData();
+  addInitialMatchesData();
 
   // Run the app
   runApp(const ResolveGamesApp());
