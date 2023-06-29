@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:resolve_games/init_teams.dart';
+import 'package:resolve_games/teams_table.dart';
 
 import 'firebase_options.dart';
 import 'game_table.dart';
@@ -125,7 +126,7 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           children: [
-            const Align(alignment: Alignment.topCenter, child: Text('Teams content (TBD)')),
+            const Align(alignment: Alignment.topCenter, child: TeamsTable()),
             const Align(alignment: Alignment.topCenter, child: GameTable()),
             const Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
             Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
