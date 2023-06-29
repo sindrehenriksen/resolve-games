@@ -126,7 +126,7 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // wireframe for each widget.
           children: [
             const Align(alignment: Alignment.topCenter, child: Text('Teams content (TBD)')),
-            const Align(alignment: Alignment.topCenter, child: GameTableWidget()),
+            const Align(alignment: Alignment.topCenter, child: GameTable()),
             const Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
             Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
           ],

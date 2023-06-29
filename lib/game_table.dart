@@ -1,14 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class GameTableWidget extends StatefulWidget {
-  const GameTableWidget({super.key});
+class GameTable extends StatefulWidget {
+  const GameTable({super.key});
 
   @override
-  GameTableWidgetState createState() => GameTableWidgetState();
+  GameTableState createState() => GameTableState();
 }
 
-class GameTableWidgetState extends State<GameTableWidget> {
+class GameTableState extends State<GameTable> {
   final teamsRef = FirebaseDatabase.instance.ref().child('teams');
   late Map<String, dynamic> _teamsData;
 
