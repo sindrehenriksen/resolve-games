@@ -42,7 +42,7 @@ class TeamsTableState extends State<TeamsTable> {
               DataCell(
                 TextField(
                   controller: TextEditingController(text: teamName),
-                  onSubmitted: (newTeamName) {
+                  onChanged: (newTeamName) {
                     teamsRef.child(teamId).update({'teamName': newTeamName});
                   },
                 ),

@@ -86,7 +86,7 @@ class MatchesTableState extends State<MatchesTable> {
                     TextField(
                       controller: TextEditingController(text: homeScore),
                       keyboardType: TextInputType.number,
-                      onSubmitted: (newScore) {
+                      onChanged: (newScore) {
                         if (newScore == '') {
                           matchesRef.child(group).child(game).child(matchId).update({'homeScore': newScore});
                         } else {
@@ -102,7 +102,7 @@ class MatchesTableState extends State<MatchesTable> {
                     TextField(
                       controller: TextEditingController(text: awayScore),
                       keyboardType: TextInputType.number,
-                      onSubmitted: (newScore) {
+                      onChanged: (newScore) {
                         if (newScore == '') {
                           matchesRef.child(group).child(game).child(matchId).update({'awayScore': newScore});
                         } else {
