@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:resolve_games/init_matches.dart';
 import 'package:resolve_games/init_teams.dart';
+import 'package:resolve_games/matches_table.dart';
 import 'package:resolve_games/teams_table.dart';
 
 import 'firebase_options.dart';
@@ -130,7 +131,7 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           children: [
             const Align(alignment: Alignment.topCenter, child: TeamsTable()),
             const Align(alignment: Alignment.topCenter, child: GameTable()),
-            const Align(alignment: Alignment.topCenter, child: Text('Matches content (TBD)')),
+            const Align(alignment: Alignment.topCenter, child: MatchesTable()),
             Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
           ],
         ))),

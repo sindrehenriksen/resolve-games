@@ -84,7 +84,7 @@ void persistToDatabase(
   List<List<String>> matches, String group, String game, DatabaseReference dbRef
   ) {
   for (int i = 0; i < matches.length; i++) {
-    final matchRef = dbRef.child(group).child(game).child('${i + 1}');
+    final matchRef = dbRef.child(group).child(game).child('M$i');
     matchRef.set({
       'homeTeam': matches[i][0],
       'awayTeam': matches[i][1],
