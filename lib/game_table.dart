@@ -56,6 +56,7 @@ class GameTableState extends State<GameTable> {
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
           ];
 
           return DataRow(cells: cells);
@@ -74,6 +75,7 @@ class GameTableState extends State<GameTable> {
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
             DataCell(Text('TBD')),
+            DataCell(Text('TBD')),
           ];
 
           return DataRow(cells: cells);
@@ -85,6 +87,7 @@ class GameTableState extends State<GameTable> {
               columns: const [
                 DataColumn(label: Text('Group A')),
                 //DataColumn(label: Text('R'), tooltip: 'Elo Rating'),
+                DataColumn(label: Text('P'), tooltip: 'Points'),
                 DataColumn(label: Text('GP'), tooltip: 'Games Played'),
                 DataColumn(label: Text('W'), tooltip: 'Wins'),
                 DataColumn(label: Text('L'), tooltip: 'Losses'),
@@ -98,6 +101,7 @@ class GameTableState extends State<GameTable> {
               columns: const [
                 DataColumn(label: Text('Group B')),
                 //DataColumn(label: Text('R'), tooltip: 'Elo Rating'),
+                DataColumn(label: Text('P'), tooltip: 'Points'),
                 DataColumn(label: Text('GP'), tooltip: 'Games Played'),
                 DataColumn(label: Text('W'), tooltip: 'Wins'),
                 DataColumn(label: Text('L'), tooltip: 'Losses'),
