@@ -9,13 +9,17 @@ class MatchesTable extends StatefulWidget {
 }
 
 class MatchesTableState extends State<MatchesTable> {
-  final matchesRef = FirebaseDatabase.instance.ref().child('matches');
-  late Map<String, dynamic> _matchesData;
+  final dbRef = FirebaseDatabase.instance.ref();
+  // Needed for the first build
+  // ignore: avoid_init_to_null
+  late DataSnapshot? _data = null;
+
   bool _groupFilter = false;
   final defaultGroupId = 'groupA';
   final defaultGroupName = 'Group A';
   final otherGroupId = 'groupB';
   final otherGroupName = 'Group B';
+
   bool _gameFilter = false;
   final defaultGameId = 'fussball';
   final defaultGameName = 'Fussball';
@@ -25,16 +29,19 @@ class MatchesTableState extends State<MatchesTable> {
   @override
   void initState() {
     super.initState();
-    _matchesData = <String, dynamic>{};
-    matchesRef.once().then((DatabaseEvent databaseEvent) {
+    dbRef.once().then((DatabaseEvent databaseEvent) {
       setState(() {
-        _matchesData = databaseEvent.snapshot.child(defaultGroupId).child(defaultGameId).value as Map<String, dynamic>;
+        _data = databaseEvent.snapshot;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_data == null) {
+      return const CircularProgressIndicator();
+    }
+
     return Column(
       children: [
         Row(
@@ -64,35 +71,39 @@ class MatchesTableState extends State<MatchesTable> {
           ],
         ),
         StreamBuilder<DatabaseEvent>(
-          stream: matchesRef.onValue.map((event) => event),
+          stream: dbRef.onValue.map((event) => event),
           builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              _data = (snapshot.data!).snapshot;
+            }
             final group = _groupFilter ? otherGroupId : defaultGroupId;
             final game = _gameFilter ? otherGameId : defaultGameId;
-            if (snapshot.hasData) {
-              _matchesData = (snapshot.data!).snapshot.child(group).child(game).value as Map<String, dynamic>;
-            }
+            final teamsData = _data?.child('teams').value as Map<String, dynamic>;
+            final matchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
 
-            final rows = _matchesData.entries.map((entry) {
+            final rows = matchesData.entries.map((entry) {
               final matchId = entry.key;
-              final homeTeam = entry.value['homeTeam'];
-              final awayTeam = entry.value['awayTeam'];
+              final homeTeamData = teamsData[entry.value['homeTeam']];
+              final awayTeamData = teamsData[entry.value['awayTeam']];
               final homeScore = entry.value['homeScore'];
               final awayScore = entry.value['awayScore'];
               return DataRow(
                 cells: [
-                  DataCell(Text(homeTeam)),
-                  DataCell(Text(awayTeam)),
+                  DataCell(Tooltip(
+                    message: homeTeamData['members'].join(', '),
+                    child: Text(homeTeamData['teamName'], textAlign: TextAlign.right),
+                  )),
                   DataCell(
                     TextField(
                       controller: TextEditingController(text: homeScore),
                       keyboardType: TextInputType.number,
                       onChanged: (newScore) {
                         if (newScore == '') {
-                          matchesRef.child(group).child(game).child(matchId).update({'homeScore': newScore});
+                          dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': newScore});
                         } else {
                           final newScoreInt = int.tryParse(newScore);
                           if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
-                            matchesRef.child(group).child(game).child(matchId).update({'homeScore': '$newScoreInt'});
+                            dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': '$newScoreInt'});
                           }
                         }
                       },
@@ -104,26 +115,31 @@ class MatchesTableState extends State<MatchesTable> {
                       keyboardType: TextInputType.number,
                       onChanged: (newScore) {
                         if (newScore == '') {
-                          matchesRef.child(group).child(game).child(matchId).update({'awayScore': newScore});
+                          dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': newScore});
                         } else {
                           final newScoreInt = int.tryParse(newScore);
                           if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
-                            matchesRef.child(group).child(game).child(matchId).update({'awayScore': '$newScoreInt'});
+                            dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': '$newScoreInt'});
                           }
                         }
                       },
                     ),
                   ),
+                  DataCell(Tooltip(
+                    message: awayTeamData['members'].join(', '),
+                    child: Text(awayTeamData['teamName']),
+                  )),
                 ],
               );
             }).toList();
 
             return DataTable(
-              columns: const [
-                DataColumn(label: Text('Home Team')),
-                DataColumn(label: Text('Away Team')),
-                DataColumn(label: Text('Home Score')),
-                DataColumn(label: Text('Away Score')),
+              headingRowHeight: 10,
+              columns: [
+                DataColumn(label: Container()),
+                DataColumn(label: Container()),
+                DataColumn(label: Container()),
+                DataColumn(label: Container()),
               ],
               rows: rows,
             );
