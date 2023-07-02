@@ -129,13 +129,20 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           children: [
-            const Align(alignment: Alignment.topCenter, child: TeamsTable()),
-            const Align(alignment: Alignment.topCenter, child: GameTable()),
-            const Align(alignment: Alignment.topCenter, child: MatchesTable()),
+            scrollableTable(const TeamsTable()),
+            scrollableTable(const GameTable()),
+            scrollableTable(const MatchesTable()),
             Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
           ],
         ))),
       ),
     );
   }
+}
+
+SingleChildScrollView scrollableTable(StatefulWidget table) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.vertical,
+    child: Align(alignment: Alignment.topCenter, child: table)
+  );
 }
