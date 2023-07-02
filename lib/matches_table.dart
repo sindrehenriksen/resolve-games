@@ -80,6 +80,7 @@ class MatchesTableState extends State<MatchesTable> {
             final game = _gameFilter ? otherGameId : defaultGameId;
             final teamsData = _data?.child('teams').value as Map<String, dynamic>;
             final matchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
+            double fontSize = 12;
 
             final rows = matchesData.entries.map((entry) {
               final matchId = entry.key;
@@ -89,14 +90,23 @@ class MatchesTableState extends State<MatchesTable> {
               final awayScore = entry.value['awayScore'];
               return DataRow(
                 cells: [
-                  DataCell(Tooltip(
-                    message: homeTeamData['members'].join(', '),
-                    child: Text(homeTeamData['teamName'], textAlign: TextAlign.right),
+                  DataCell(Container(
+                    alignment: Alignment.centerRight,
+                    child: Tooltip(
+                      message: homeTeamData['members'].join(', '),
+                      child: Text(
+                        homeTeamData['teamName'],
+                        style: TextStyle(fontSize: fontSize),
+                        textAlign: TextAlign.right,
+                      ),
+                    )
                   )),
                   DataCell(
                     TextField(
                       controller: TextEditingController(text: homeScore),
                       keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: fontSize),
                       onChanged: (newScore) {
                         if (newScore == '') {
                           dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': newScore});
@@ -113,6 +123,8 @@ class MatchesTableState extends State<MatchesTable> {
                     TextField(
                       controller: TextEditingController(text: awayScore),
                       keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: fontSize),
                       onChanged: (newScore) {
                         if (newScore == '') {
                           dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': newScore});
@@ -127,13 +139,17 @@ class MatchesTableState extends State<MatchesTable> {
                   ),
                   DataCell(Tooltip(
                     message: awayTeamData['members'].join(', '),
-                    child: Text(awayTeamData['teamName']),
+                    child: Text(
+                      awayTeamData['teamName'],
+                      style: TextStyle(fontSize: fontSize),
+                    ),
                   )),
                 ],
               );
             }).toList();
 
             return DataTable(
+              columnSpacing: 20,
               headingRowHeight: 10,
               columns: [
                 DataColumn(label: Container()),
