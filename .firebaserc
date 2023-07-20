@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "resolve-games"
-  }
+    "default": "resolve-games-dev",
+    "rgdev": "resolve-games-dev",
+    "rg": "resolve-games"
+  },
+  "targets": {},
+  "etags": {}
 }
