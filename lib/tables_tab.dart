@@ -8,14 +8,20 @@ class TablesTab extends StatefulWidget {
   TablesTabState createState() => TablesTabState();
 }
 
-const List<Widget> games = <Widget>[
+const List<Widget> tables = <Widget>[
+  Text('Total'),
   Text('Fussball'),
   Text('Mario Kart'),
 ];
 
+const String total = 'total';
+const String fussball = 'fussball';
+const String marioKart = 'marioKart';
+
 const List<String> gameIds = <String>[
-  'fussball',
-  'marioKart',
+  total,
+  fussball,
+  marioKart,
 ];
 
 class TablesTabState extends State<TablesTab> {
@@ -24,7 +30,7 @@ class TablesTabState extends State<TablesTab> {
   // ignore: avoid_init_to_null
   late DataSnapshot? _data = null;
 
-  final List<bool> _selectedGame = <bool>[true, false];  // [fussball, marioKart]
+  final List<bool> _selectedGame = <bool>[true, false, false];  // [total, fussball, mario kart]
 
   @override
   void initState() {
@@ -60,7 +66,7 @@ class TablesTabState extends State<TablesTab> {
             minWidth: 80.0,
           ),
           isSelected: _selectedGame,
-          children: games,
+          children: tables,
         ),
         StreamBuilder<DatabaseEvent>(
           stream: dbRef.onValue.map((event) => event),
@@ -93,13 +99,23 @@ List<DataTable> buildTables(Map<String, dynamic> teams, DataSnapshot matches, St
       teamsB[teamId] = teams;
     }
   });
-  final groupAMatches = matches.child('groupA').child(game).value as Map<String, dynamic>;
-  final groupBMatches = matches.child('groupB').child(game).value as Map<String, dynamic>;
+  final groupAMatches = getMatches(matches, 'groupA', game);
+  final groupBMatches = getMatches(matches, 'groupB', game);
   final rowsA = getRows(teamsA, groupAMatches);
   final rowsB = getRows(teamsB, groupBMatches);
   final groupATable = buildGroupTable(rowsA, 'Group A');
   final groupBTable = buildGroupTable(rowsB, 'Group B');
   return [groupATable, groupBTable];
+}
+
+List<dynamic> getMatches(DataSnapshot matches, String group, String game) {
+  if (game == total) {
+    final marioKartMatches = matches.child(group).child(marioKart).value as Map<String, dynamic>;
+    final fussballMatches = matches.child(group).child(fussball).value as Map<String, dynamic>;
+    return [...marioKartMatches.values, ...fussballMatches.values];
+  }
+  final matchesData = matches.child(group).child(game).value as Map<String, dynamic>;
+  return matchesData.values.toList();
 }
 
 DataTable buildGroupTable(List<DataRow> rows, String group) {
@@ -115,7 +131,7 @@ DataTable buildGroupTable(List<DataRow> rows, String group) {
   );
 }
 
-List<DataRow> getRows(Map<String, dynamic> teams, Map<String, dynamic> matches) {
+List<DataRow> getRows(Map<String, dynamic> teams, List<dynamic> matches) {
   final rows = teams.entries.map((entry) {
     final teamData = entry.value;
     final teamId = entry.key;
@@ -128,11 +144,10 @@ List<DataRow> getRows(Map<String, dynamic> teams, Map<String, dynamic> matches) 
 
     final teamMatches = getTeamMatches(teamId, matches);
     for (final match in teamMatches) {
-      final matchData = match.value;
-      final homeTeam = matchData['homeTeam'];
-      final awayTeam = matchData['awayTeam'];
-      final homeScore = int.tryParse(matchData['homeScore'] ?? '');
-      final awayScore = int.tryParse(matchData['awayScore'] ?? '');
+      final homeTeam = match['homeTeam'];
+      final awayTeam = match['awayTeam'];
+      final homeScore = int.tryParse(match['homeScore'] ?? '');
+      final awayScore = int.tryParse(match['awayScore'] ?? '');
 
       if (homeScore == null || awayScore == null) {
         continue;
@@ -180,10 +195,9 @@ List<DataRow> getRows(Map<String, dynamic> teams, Map<String, dynamic> matches) 
 }
 
 // Get all matches for the given teamId
-Iterable<dynamic> getTeamMatches(String teamId, Map<String, dynamic> allGroupMatches) {
-  final teamMatches = allGroupMatches.entries.where((entry) {
-    final matchData = entry.value;
-    return matchData['homeTeam'] == teamId || matchData['awayTeam'] == teamId;
+Iterable<dynamic> getTeamMatches(String teamId, List<dynamic> allGroupMatches) {
+  final teamMatches = allGroupMatches.where((match) {
+    return match['homeTeam'] == teamId || match['awayTeam'] == teamId;
   });
   return teamMatches;
 }
@@ -204,7 +218,7 @@ List<DataRow> sort(List<DataRow> rows) {
   return rows;
 }
 
-int parseCell(DataCell cell) {
+double parseCell(DataCell cell) {
   Text child = cell.child as Text;
-  return int.tryParse(child.data!) ?? -1;
+  return double.tryParse(child.data!) ?? -1;
 }
