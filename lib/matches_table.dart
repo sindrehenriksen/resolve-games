@@ -26,6 +26,11 @@ class MatchesTableState extends State<MatchesTable> {
   final otherGameId = 'marioKart';
   final otherGameName = 'Mario Kart';
 
+  final Map<String, TextEditingController> _matchIdToHomeTeamScoreController = {};
+  final Map<String, TextEditingController> _matchIdToAwayTeamScoreController = {};
+
+  double fontSize = 12;
+
   @override
   void initState() {
     super.initState();
@@ -38,12 +43,85 @@ class MatchesTableState extends State<MatchesTable> {
 
   @override
   Widget build(BuildContext context) {
+
     if (_data == null) {
       return const CircularProgressIndicator();
     }
 
+    final group = _groupFilter ? otherGroupId : defaultGroupId;
+    final game = _gameFilter ? otherGameId : defaultGameId;
+    final teamsData = _data?.child('teams').value as Map<String, dynamic>;
+    final matchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
+
+    final rows = matchesData.entries.map((entry) {
+      final matchId = entry.key;
+      _matchIdToHomeTeamScoreController[matchId] = TextEditingController();
+      _matchIdToAwayTeamScoreController[matchId] = TextEditingController();
+      final homeTeamData = teamsData[entry.value['homeTeam']];
+      final awayTeamData = teamsData[entry.value['awayTeam']];
+      return DataRow(
+        cells: [
+          DataCell(Container(
+            alignment: Alignment.centerRight,
+            child: Tooltip(
+              message: homeTeamData['members'].join(', '),
+              child: Text(
+                homeTeamData['teamName'],
+                style: TextStyle(fontSize: fontSize),
+                textAlign: TextAlign.right,
+              ),
+            )
+          )),
+          DataCell(
+            TextField(
+              controller: _matchIdToHomeTeamScoreController[matchId],
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: fontSize),
+              onChanged: (newScore) {
+                if (newScore == '') {
+                  dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': newScore});
+                } else {
+                  final newScoreInt = int.tryParse(newScore);
+                  if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
+                    dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': '$newScoreInt'});
+                  }
+                }
+              },
+            ),
+          ),
+          DataCell(
+            TextField(
+              controller: _matchIdToAwayTeamScoreController[matchId],
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: fontSize),
+              onChanged: (newScore) {
+                if (newScore == '') {
+                  dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': newScore});
+                } else {
+                  final newScoreInt = int.tryParse(newScore);
+                  if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
+                    dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': '$newScoreInt'});
+                  }
+                }
+              },
+            ),
+          ),
+          DataCell(Tooltip(
+            message: awayTeamData['members'].join(', '),
+            child: Text(
+              awayTeamData['teamName'],
+              style: TextStyle(fontSize: fontSize),
+            ),
+          )),
+        ],
+      );
+    }).toList();
+
     return Column(
       children: [
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -70,84 +148,23 @@ class MatchesTableState extends State<MatchesTable> {
             Text(otherGameName),
           ],
         ),
+
         StreamBuilder<DatabaseEvent>(
           stream: dbRef.onValue.map((event) => event),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               _data = (snapshot.data!).snapshot;
             }
-            final group = _groupFilter ? otherGroupId : defaultGroupId;
-            final game = _gameFilter ? otherGameId : defaultGameId;
-            final teamsData = _data?.child('teams').value as Map<String, dynamic>;
-            final matchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
-            double fontSize = 12;
-
-            final rows = matchesData.entries.map((entry) {
+            final updatedMatchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
+            for (final entry in updatedMatchesData.entries) {
               final matchId = entry.key;
-              final homeTeamData = teamsData[entry.value['homeTeam']];
-              final awayTeamData = teamsData[entry.value['awayTeam']];
               final homeScore = entry.value['homeScore'];
               final awayScore = entry.value['awayScore'];
-              return DataRow(
-                cells: [
-                  DataCell(Container(
-                    alignment: Alignment.centerRight,
-                    child: Tooltip(
-                      message: homeTeamData['members'].join(', '),
-                      child: Text(
-                        homeTeamData['teamName'],
-                        style: TextStyle(fontSize: fontSize),
-                        textAlign: TextAlign.right,
-                      ),
-                    )
-                  )),
-                  DataCell(
-                    TextField(
-                      controller: TextEditingController(text: homeScore),
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: fontSize),
-                      onChanged: (newScore) {
-                        if (newScore == '') {
-                          dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': newScore});
-                        } else {
-                          final newScoreInt = int.tryParse(newScore);
-                          if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
-                            dbRef.child('matches').child(group).child(game).child(matchId).update({'homeScore': '$newScoreInt'});
-                          }
-                        }
-                      },
-                    ),
-                  ),
-                  DataCell(
-                    TextField(
-                      controller: TextEditingController(text: awayScore),
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: fontSize),
-                      onChanged: (newScore) {
-                        if (newScore == '') {
-                          dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': newScore});
-                        } else {
-                          final newScoreInt = int.tryParse(newScore);
-                          if (newScoreInt != null && newScoreInt >= 0 && newScoreInt <= 108) {
-                            dbRef.child('matches').child(group).child(game).child(matchId).update({'awayScore': '$newScoreInt'});
-                          }
-                        }
-                      },
-                    ),
-                  ),
-                  DataCell(Tooltip(
-                    message: awayTeamData['members'].join(', '),
-                    child: Text(
-                      awayTeamData['teamName'],
-                      style: TextStyle(fontSize: fontSize),
-                    ),
-                  )),
-                ],
-              );
-            }).toList();
-
+              _matchIdToHomeTeamScoreController[matchId]?.text = homeScore ?? '';
+              _matchIdToHomeTeamScoreController[matchId]?.selection = TextSelection.fromPosition(TextPosition(offset: homeScore?.length ?? 0));
+              _matchIdToAwayTeamScoreController[matchId]?.text = awayScore ?? '';
+              _matchIdToAwayTeamScoreController[matchId]?.selection = TextSelection.fromPosition(TextPosition(offset: awayScore?.length ?? 0));
+            }
             return DataTable(
               columnSpacing: 20,
               headingRowHeight: 10,
@@ -159,7 +176,7 @@ class MatchesTableState extends State<MatchesTable> {
               ],
               rows: rows,
             );
-          },
+          }
         ),
       ],
     );
