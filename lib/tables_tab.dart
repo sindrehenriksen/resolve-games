@@ -1,14 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class GameTable extends StatefulWidget {
-  const GameTable({super.key});
+class TablesTab extends StatefulWidget {
+  const TablesTab({super.key});
 
   @override
-  GameTableState createState() => GameTableState();
+  TablesTabState createState() => TablesTabState();
 }
 
-class GameTableState extends State<GameTable> {
+class TablesTabState extends State<TablesTab> {
   final dbRef = FirebaseDatabase.instance.ref();
   // Needed for the first build
   // ignore: avoid_init_to_null

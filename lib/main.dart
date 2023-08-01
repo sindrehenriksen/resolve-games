@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:resolve_games/init_matches.dart';
 import 'package:resolve_games/init_teams.dart';
-import 'package:resolve_games/matches_table.dart';
-import 'package:resolve_games/teams_table.dart';
+import 'package:resolve_games/matches_tab.dart';
+import 'package:resolve_games/teams_tab.dart';
+import 'package:resolve_games/tables_tab.dart';
 
 import 'firebase_options.dart';
-import 'game_table.dart';
 
 Future<void> main() async {
   // Initialize Firebase
@@ -129,9 +129,9 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           children: [
-            scrollableTable(const TeamsTable()),
-            scrollableTable(const GameTable()),
-            scrollableTable(const MatchesTable()),
+            scrollableTable(const TeamsTab()),
+            scrollableTable(const TablesTab()),
+            scrollableTable(const MatchesTab()),
             Align(alignment: Alignment.topCenter, child: Markdown(data: rulesMarkdownContent)),
           ],
         ))),
