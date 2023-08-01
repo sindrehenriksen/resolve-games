@@ -38,7 +38,7 @@ dependencies:
 
   flutter_markdown: any
   firebase_core: ^2.14.0
-  firebase_database: ^10.2.3
+  firebase_database: ^10.2.4
   csv: ^5.0.2
 
 dev_dependencies:
