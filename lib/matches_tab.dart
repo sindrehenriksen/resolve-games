@@ -8,23 +8,34 @@ class MatchesTab extends StatefulWidget {
   MatchesTabState createState() => MatchesTabState();
 }
 
+const List<Widget> games = <Widget>[
+  Text('Fussball'),
+  Text('Mario Kart'),
+];
+
+const List<String> gameIds = <String>[
+  'fussball',
+  'marioKart',
+];
+
+const List<Widget> groups = <Widget>[
+  Text('Group A'),
+  Text('Group B'),
+];
+
+const List<String> groupIds = <String>[
+  'groupA',
+  'groupB',
+];
+
 class MatchesTabState extends State<MatchesTab> {
   final dbRef = FirebaseDatabase.instance.ref();
   // Needed for the first build
   // ignore: avoid_init_to_null
   late DataSnapshot? _data = null;
 
-  bool _groupFilter = false;
-  final defaultGroupId = 'groupA';
-  final defaultGroupName = 'Group A';
-  final otherGroupId = 'groupB';
-  final otherGroupName = 'Group B';
-
-  bool _gameFilter = false;
-  final defaultGameId = 'fussball';
-  final defaultGameName = 'Fussball';
-  final otherGameId = 'marioKart';
-  final otherGameName = 'Mario Kart';
+  final List<bool> _selectedGroup = <bool>[true, false];  // [fussball, marioKart]
+  final List<bool> _selectedGame = <bool>[true, false];  // [fussball, marioKart]
 
   final Map<String, TextEditingController> _matchIdToHomeTeamScoreController = {};
   final Map<String, TextEditingController> _matchIdToAwayTeamScoreController = {};
@@ -48,8 +59,8 @@ class MatchesTabState extends State<MatchesTab> {
       return const CircularProgressIndicator();
     }
 
-    final group = _groupFilter ? otherGroupId : defaultGroupId;
-    final game = _gameFilter ? otherGameId : defaultGameId;
+    final group = groupIds[_selectedGroup.indexOf(true)];
+    final game = gameIds[_selectedGame.indexOf(true)];
     final teamsData = _data?.child('teams').value as Map<String, dynamic>;
     final matchesData = _data!.child('matches').child(group).child(game).value as Map<String, dynamic>;
 
@@ -125,27 +136,43 @@ class MatchesTabState extends State<MatchesTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(defaultGroupName),
-            Switch(
-              value: _groupFilter,
-              onChanged: (value) {
+            ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: (int index) {
                 setState(() {
-                  _groupFilter = value;
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedGroup.length; i++) {
+                    _selectedGroup[i] = i == index;
+                  }
                 });
               },
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              constraints: const BoxConstraints(
+                minHeight: 40.0,
+                minWidth: 80.0,
+              ),
+              isSelected: _selectedGroup,
+              children: groups,
             ),
-            Text(otherGroupName),
             const VerticalDivider(),
-            Text(defaultGameName),
-            Switch(
-              value: _gameFilter,
-              onChanged: (value) {
+            ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: (int index) {
                 setState(() {
-                  _gameFilter = value;
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedGame.length; i++) {
+                    _selectedGame[i] = i == index;
+                  }
                 });
               },
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              constraints: const BoxConstraints(
+                minHeight: 40.0,
+                minWidth: 80.0,
+              ),
+              isSelected: _selectedGame,
+              children: games,
             ),
-            Text(otherGameName),
           ],
         ),
 

@@ -8,17 +8,23 @@ class TablesTab extends StatefulWidget {
   TablesTabState createState() => TablesTabState();
 }
 
+const List<Widget> games = <Widget>[
+  Text('Fussball'),
+  Text('Mario Kart'),
+];
+
+const List<String> gameIds = <String>[
+  'fussball',
+  'marioKart',
+];
+
 class TablesTabState extends State<TablesTab> {
   final dbRef = FirebaseDatabase.instance.ref();
   // Needed for the first build
   // ignore: avoid_init_to_null
   late DataSnapshot? _data = null;
 
-  bool _gameFilter = false;
-  final defaultGameId = 'fussball';
-  final defaultGameName = 'Fussball';
-  final otherGameId = 'marioKart';
-  final otherGameName = 'Mario Kart';
+  final List<bool> _selectedGame = <bool>[true, false];  // [fussball, marioKart]
 
   @override
   void initState() {
@@ -38,20 +44,23 @@ class TablesTabState extends State<TablesTab> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(defaultGameName),
-            Switch(
-              value: _gameFilter,
-              onChanged: (value) {
-                setState(() {
-                  _gameFilter = value;
-                });
-              },
-            ),
-            Text(otherGameName),
-          ],
+        ToggleButtons(
+          direction: Axis.horizontal,
+          onPressed: (int index) {
+            setState(() {
+              // The button that is tapped is set to true, and the others to false.
+              for (int i = 0; i < _selectedGame.length; i++) {
+                _selectedGame[i] = i == index;
+              }
+            });
+          },
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          constraints: const BoxConstraints(
+            minHeight: 40.0,
+            minWidth: 80.0,
+          ),
+          isSelected: _selectedGame,
+          children: games,
         ),
         StreamBuilder<DatabaseEvent>(
           stream: dbRef.onValue.map((event) => event),
@@ -63,7 +72,7 @@ class TablesTabState extends State<TablesTab> {
             final teamsData = _data?.child('teams').value as Map<String, dynamic>;
             final matchesData = _data!.child('matches');
 
-            final game = _gameFilter ? otherGameId : defaultGameId;
+            final game = gameIds[_selectedGame.indexOf(true)];
             return Column(
               children: buildTables(teamsData, matchesData, game),
             );
