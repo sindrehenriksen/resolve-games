@@ -1,5 +1,5 @@
-# Resolve Summer Games 2023
+# Resolve Games
 
-[Visma Resolve](https://resolve.visma.com/) Mario Kart and Fussball Summer Competition 2023!
+Recurrent [Visma Resolve](https://resolve.visma.com/) Mario Kart and Fussball Competition!
 
 https://resolve-games.web.app/#/

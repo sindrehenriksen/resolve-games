@@ -32,7 +32,7 @@ class ResolveGamesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Resolve Summer Games 2023',
+      title: 'Resolve Games',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -52,7 +52,7 @@ class ResolveGamesApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromRGBO(0, 122, 202, 1)),
         useMaterial3: true,
       ),
-      home: const ResolveGamesHomePage(title: 'Resolve Summer Games 2023'),
+      home: const ResolveGamesHomePage(title: 'Resolve Christmas Games 2023'),
     );
   }
 }

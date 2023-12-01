@@ -1,19 +1,15 @@
 ## TLDR
 
-There are two groups of five teams. Each team in every group plays all the other teams once in games of __Mario Kart__ and __Fussball__.
+There are two groups of three and four teams, respectively. Each team in each group plays all the other teams once in games of __Mario Kart__ and __Fussball__.
 
-The best teams from each group go into a knock-out round that will decide who will become _the Champions of the Resolve Summer Games 2023_ - thus writing their names into the history books for eternity!
+The best teams from each group go into a knock-out round that will decide who will become _the Champions of the Resolve Christmas Games 2023_ - thus sementing their names on the glourios Resolve Games Trophy for eternity!
 
 
 ## Practicalities
 
 ### Playing times
 
-The teams are responsible for finding suitable times for their own matches. 
-
-- Group A teams are expected to more or less complete all their games by the end of _week 27_, since most players are on vacation in weeks 28-30.
-- Group B teams are expected to more or less complete all their games by the end of _week 30_, since most players are on vacation in weeks 27-29.
-- The knockout rounds will be played in week 31.
+The teams are responsible for finding suitable times for their own matches. Make sure you have played all of your matches by Wednesday, Dec 13th!
 
 ### Results
 
