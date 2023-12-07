@@ -18,6 +18,8 @@ const String total = 'total';
 const String fussball = 'fussball';
 const String marioKart = 'marioKart';
 
+const fussballPDFactor = 4;  // Points difference factor, based on empirical data
+
 const List<String> gameIds = <String>[
   total,
   fussball,
@@ -112,6 +114,16 @@ List<dynamic> getMatches(DataSnapshot matches, String group, String game) {
   if (game == total) {
     final marioKartMatches = matches.child(group).child(marioKart).value as Map<String, dynamic>;
     final fussballMatches = matches.child(group).child(fussball).value as Map<String, dynamic>;
+    fussballMatches.values.forEach((match) {
+      final homeScore = int.tryParse(match['homeScore'] ?? '');
+      if (homeScore != null) {
+        match['homeScore'] = (homeScore * fussballPDFactor).toString();
+      }
+      final awayScore = int.tryParse(match['awayScore'] ?? '');
+      if (awayScore != null) {
+        match['awayScore'] = (awayScore * fussballPDFactor).toString();
+      }
+    });
     return [...marioKartMatches.values, ...fussballMatches.values];
   }
   final matchesData = matches.child(group).child(game).value as Map<String, dynamic>;
