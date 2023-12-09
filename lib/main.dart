@@ -119,9 +119,18 @@ class _ResolveGamesHomePageState extends State<ResolveGamesHomePage> {
           // Here we take the value from the HomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: tabs,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 360,
+                child: TabBar(
+                  isScrollable: false,
+                  tabs: tabs,
+                ),
+              ),
+            ),
           ),
         ),
         body: Center(child: SizedBox(width: 700, child: TabBarView(
