@@ -102,12 +102,13 @@ List<DataTable> buildTables(Map<String, dynamic> teams, DataSnapshot matches, St
     }
   });
   final groupAMatches = getMatches(matches, 'groupA', game);
-  final groupBMatches = getMatches(matches, 'groupB', game);
+  //final groupBMatches = getMatches(matches, 'groupB', game);
   final rowsA = getRows(teamsA, groupAMatches);
-  final rowsB = getRows(teamsB, groupBMatches);
+  //final rowsB = getRows(teamsB, groupBMatches);
   final groupATable = buildGroupTable(rowsA, 'Group A');
-  final groupBTable = buildGroupTable(rowsB, 'Group B');
-  return [groupATable, groupBTable];
+  //final groupBTable = buildGroupTable(rowsB, 'Group B');
+  //return [groupATable, groupBTable];
+  return [groupATable];
 }
 
 List<dynamic> getMatches(DataSnapshot matches, String group, String game) {

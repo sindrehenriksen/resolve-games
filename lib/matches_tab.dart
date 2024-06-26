@@ -136,25 +136,25 @@ class MatchesTabState extends State<MatchesTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ToggleButtons(
-              direction: Axis.horizontal,
-              onPressed: (int index) {
-                setState(() {
-                  // The button that is tapped is set to true, and the others to false.
-                  for (int i = 0; i < _selectedGroup.length; i++) {
-                    _selectedGroup[i] = i == index;
-                  }
-                });
-              },
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              constraints: const BoxConstraints(
-                minHeight: 40.0,
-                minWidth: 80.0,
-              ),
-              isSelected: _selectedGroup,
-              children: groups,
-            ),
-            const VerticalDivider(),
+            //ToggleButtons(
+            //  direction: Axis.horizontal,
+            //  onPressed: (int index) {
+            //    setState(() {
+            //      // The button that is tapped is set to true, and the others to false.
+            //      for (int i = 0; i < _selectedGroup.length; i++) {
+            //        _selectedGroup[i] = i == index;
+            //      }
+            //    });
+            //  },
+            //  borderRadius: const BorderRadius.all(Radius.circular(8)),
+            //  constraints: const BoxConstraints(
+            //    minHeight: 40.0,
+            //    minWidth: 80.0,
+            //  ),
+            //  isSelected: _selectedGroup,
+            //  children: groups,
+            //),
+            //const VerticalDivider(),
             ToggleButtons(
               direction: Axis.horizontal,
               onPressed: (int index) {
