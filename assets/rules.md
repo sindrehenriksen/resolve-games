@@ -37,7 +37,7 @@ After a match, the winning team is responsible for entering the match score. Thi
 - No spinning! Spinning is defined as turning any of the rods more than 360 degrees without touching the ball.
 - Balls are to be dropped neutrally - no adding spin to the ball on the drop!
 - First team to 10 points wins!
-- Other than this, if there are disagremeents, we (obviously) follow the [official rules](https://www.foosballsoccer.com/official-foosball-rules.html).
+- Other than this, if there are disagreements, we (obviously) follow the [official rules](https://www.foosballsoccer.com/official-foosball-rules.html).
 
 
 ## Knock-out Rounds
