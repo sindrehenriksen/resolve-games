@@ -1,8 +1,6 @@
 team_id,member1,member2,member3
-A1,Magnus,Maren
-A2,Martin,Camilla
-A3,Markus,Lars
-A4,Amanda,Henrik H
-B1,Sindre,Sander
-B2,Anders,Henrik M
-B3,Stian,Espen
+A1,Mari,Sander,Magnus
+A2,Jonah,Espen,Maren
+A3,Oskar,Stian,Anders
+A4,Odin,Henrik M,Martin
+A5,Camilla,Henrik H,Sindre
