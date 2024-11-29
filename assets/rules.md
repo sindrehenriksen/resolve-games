@@ -2,14 +2,14 @@
 
 There are five teams. Each team plays all the other teams once in games of __Mario Kart__ and __Fussball__.
 
-After the group stage, all the teams get a chance in the knock-out phase. Obviously, the higher you rank in the group stage the bigger your advantage in the knock-out phase. The knock-out phase decides who becomes _the Champions of the Resolve Summer Games 2024_ - thus cementing their names on the glorious Resolve Games Trophy for eternity!
+After the group stage, all the teams get a chance in the knock-out phase. Obviously, the higher you rank in the group stage the bigger your advantage in the knock-out phase. The knock-out phase decides who becomes _the Champions of the Resolve Christmas Games 2024_ - thus cementing their names on the glorious Resolve Games Trophy for eternity!
 
 
 ## Practicalities
 
 ### Playing times
 
-The teams are responsible for finding suitable times for their own matches. Make sure you have played all of your matches by Wednesday, July 31st!
+The teams are responsible for finding suitable times for their own matches.
 
 ### Results
 
